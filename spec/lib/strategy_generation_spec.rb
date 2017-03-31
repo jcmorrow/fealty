@@ -21,9 +21,9 @@ describe StrategyGeneration do
       strategy = instance_double(Strategy)
       allow(StrategyGenerator).to receive(:mutate).and_return(strategy)
 
-      generation = StrategyGeneration.from_strategy(strategy)
+      generation = StrategyGeneration.from_strategy(strategy, 10)
 
-      expect(generation.strategies).to eq([strategy] * 100)
+      expect(generation.strategies).to eq([strategy] * 10)
     end
   end
 end

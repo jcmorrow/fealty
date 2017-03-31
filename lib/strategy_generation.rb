@@ -6,9 +6,9 @@ class StrategyGeneration
     @strategy_points = Hash.new
   end
 
-  def self.from_strategy(strategy)
+  def self.from_strategy(strategy, count = 10)
     StrategyGeneration.new.tap do |generation|
-      generation.strategies = Array.new(10) do
+      generation.strategies = Array.new(count - 1) do
         mutated_strategy = StrategyGenerator.mutate(strategy)
         while [true, true, true, false].sample
           mutated_strategy = StrategyGenerator.mutate(mutated_strategy)
