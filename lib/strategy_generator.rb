@@ -8,8 +8,8 @@ class StrategyGenerator
 
   def self.mutate(strategy)
     Strategy.new(
-      buy_priorities: mutate_array(strategy.buy_priorities),
-      play_priorities: mutate_array(strategy.play_priorities),
+      buy_priorities: mutate_array(strategy.buy_priorities.map(&:to_sym)),
+      play_priorities: mutate_array(strategy.play_priorities.map(&:to_sym)),
     )
   end
 
@@ -18,11 +18,11 @@ class StrategyGenerator
   end
 
   def self.random_play_priorities
-    Cards::ACTION_CLASSES.shuffle
+    Cards::ACTION_CLASSES.map(&:to_sym).shuffle
   end
 
   def self.random_buy_priority
-    Cards::CLASSES.sample
+    Cards::CLASSES.map(&:to_sym).sample
   end
 
   def self.mutate_array(array)
@@ -32,6 +32,6 @@ class StrategyGenerator
   end
 
   def self.provinces
-    [Cards::Province] * 10
+    [:province] * 10
   end
 end

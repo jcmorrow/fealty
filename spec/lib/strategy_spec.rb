@@ -1,14 +1,14 @@
 require "spec_helper"
 require "lib/cards"
+require "lib/priority"
 require "lib/strategy"
 
 describe Strategy do
   describe "#next_buy" do
     it "returns the highest buy you can make" do
-      buys = [Cards::Gold, Cards::Copper]
+      buys = [:gold, :copper]
       deck = []
       strategy = Strategy.new(buy_priorities: buys, play_priorities: [])
-      allow(Cards::Gold).to receive(:buy)
 
       buy = strategy.next_buy(deck, 6)
 
@@ -16,7 +16,7 @@ describe Strategy do
     end
 
     it "returns the highest buy you can make and don't already have" do
-      buys = [Cards::Gold, Cards::Copper]
+      buys = [:gold, :copper]
       deck = [Cards::Gold.new]
       strategy = Strategy.new(buy_priorities: buys, play_priorities: [])
       allow(Cards::Gold).to receive(:buy)
@@ -28,7 +28,7 @@ describe Strategy do
 
     context "when you can't afford anything" do
       it "returns nil" do
-        buys = [Cards::Gold]
+        buys = [:gold]
         deck = [Cards::Gold]
         strategy = Strategy.new(buy_priorities: buys, play_priorities: [])
         allow(Cards::Gold).to receive(:buy)
@@ -49,7 +49,7 @@ describe Strategy do
       hand_after_first_play = [_copper, second_gold]
       strategy = Strategy.new(
         buy_priorities: [],
-        play_priorities: [Cards::Gold, Cards::Copper],
+        play_priorities: [:gold, :copper],
       )
 
       first_play = strategy.next_play(hand, 1)
@@ -64,7 +64,7 @@ describe Strategy do
         hand = [Cards::Copper.new]
         strategy = Strategy.new(
           buy_priorities: [],
-          play_priorities: [Cards::Gold],
+          play_priorities: [:gold],
         )
 
         play = strategy.next_play(hand, 1)
@@ -78,7 +78,7 @@ describe Strategy do
         hand = [Cards::Smithy.new]
         strategy = Strategy.new(
           buy_priorities: [],
-          play_priorities: [Cards::Smithy],
+          play_priorities: [:smithy],
         )
 
         play = strategy.next_play(hand, 0)

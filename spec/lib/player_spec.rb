@@ -1,5 +1,6 @@
 require "spec_helper"
 require "lib/cards"
+require "lib/priority"
 require "lib/strategy"
 require "lib/strategy_generator"
 require "lib/player"
@@ -8,7 +9,7 @@ describe Player do
   describe "#take_turn" do
     it "buys cards" do
       strategy = Strategy.new(
-        buy_priorities: [Cards::Gold, Cards::Gold],
+        buy_priorities: [:gold, :gold],
         play_priorities: [],
       )
       gold = Cards::Gold.new
@@ -30,8 +31,8 @@ describe Player do
 
     it "plays cards as long as it has actions left" do
       strategy = Strategy.new(
-        buy_priorities: [Cards::Gold],
-        play_priorities: [Cards::Village, Cards::Smithy],
+        buy_priorities: [:gold],
+        play_priorities: [:village, :smithy],
       )
       gold = Cards::Gold.new
       allow(Cards::Gold).to receive(:new).and_return(gold)

@@ -1,16 +1,17 @@
 require "spec/spec_helper"
 require "lib/cards"
+require "lib/priority"
 require "lib/strategy"
 require "lib/strategy_generator"
 
 describe StrategyGenerator do
-  describe "#random" do
+  describe ".random" do
     it "returns a Strategy with random priorities" do
       expect(StrategyGenerator.random).to be_a(Strategy)
     end
   end
 
-  describe "#mutate" do
+  describe ".mutate" do
     it "changes the order but not the contents of the priorities" do
       strategy = StrategyGenerator.random(5)
       old_buy_priorities = strategy.buy_priorities.dup
