@@ -5,7 +5,7 @@ module Cards
     end
 
     def self.to_sym
-      name.match(/Cards::(\w+)/)[1].downcase.to_sym
+      @_to_sym ||= name.match(/Cards::(\w+)/)[1].downcase.to_sym
     end
 
     def self.*(number_of_copies)

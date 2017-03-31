@@ -1,9 +1,7 @@
 class StrategyGenerator
   def self.random(size = 10)
     Strategy.new(
-      buy_priorities: [{ province: { permanent: true } }].concat(
-        random_buy_priorities(size),
-      ),
+      buy_priorities: default_priorities.concat(random_buy_priorities(size)),
       play_priorities: random_play_priorities,
     )
   end
@@ -20,16 +18,32 @@ class StrategyGenerator
   end
 
   def self.random_play_priorities
-    Cards::ACTION_CLASSES.map(&:to_sym).shuffle
+    play_priority_options.shuffle
   end
 
   def self.random_buy_priority
-    Cards::CLASSES.map(&:to_sym).sample
+    buy_priority_options.sample
+  end
+
+  def self.buy_priority_options
+    @_buy_priority_options ||= Cards::CLASSES.map(&:to_sym)
+  end
+
+  def self.play_priority_options
+    @_play_priority_options ||= Cards::ACTION_CLASSES.map(&:to_sym)
   end
 
   def self.mutate_array(array)
-    index = Random.rand(array.size - 1)
-    array[index], array[index + 1] = array[index + 1], array[index]
-    array
+    copy = array.dup
+    index = Random.rand(copy.size - 1)
+    copy[index], copy[index + 1] = copy[index + 1], copy[index]
+    copy
+  end
+
+  def self.default_priorities
+    [
+      { province: { permanent: true } },
+      { gold: { permanent: true } },
+    ]
   end
 end

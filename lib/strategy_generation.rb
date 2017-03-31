@@ -22,7 +22,7 @@ class StrategyGeneration
   def evolve
     strategies.each do |strategy|
       player = Player.new(strategy)
-      20.times { player.take_turn }
+      30.times { player.take_turn }
       strategy_points[strategy] = player.points
     end
     sorted_points = strategy_points.sort { |a, b| b[1] <=> a[1] }

@@ -21,10 +21,12 @@ class Strategy
 
   def next_buy(cards, money)
     priorities = buy_priorities.dup
+    priority_classes = priorities.map(&:card_type)
     cards.each do |card|
-      priority_index = priorities.map(&:card_type).index(card.class)
+      priority_index = priority_classes.index(card.class)
       if priority_index && !priorities[priority_index].permanent?
         priorities.delete_at(priority_index)
+        priority_classes.delete_at(priority_index)
       end
     end
     priorities.detect { |buy| money >= buy.cost }&.card_type

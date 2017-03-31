@@ -4,6 +4,7 @@ $: << File.expand_path("../../lib/", __FILE__)
 
 require "awesome_print"
 require "byebug"
+require "ruby-prof"
 require "cards"
 require "player"
 require "priority"
@@ -11,40 +12,54 @@ require "strategy"
 require "strategy_generator"
 require "strategy_generation"
 
-first_generation = StrategyGeneration.new
-best_candidate = first_generation.evolve[0]
+def log_strategy(strategy)
+  puts <<-DOC
 
-puts <<-DOC
+  Buy Strategy
+  ============
+  #{strategy.buy_priorities.map(&:to_sym)}
+  DOC
 
-Buy Strategy
-============
-#{best_candidate.buy_priorities.map(&:to_sym)}
-DOC
+  puts <<-DOC
 
-puts <<-DOC
-
-Play Strategy
-============
-#{best_candidate.play_priorities.map(&:to_sym)}
-DOC
-
-100.times do |index|
-  generation = StrategyGeneration.from_strategy(best_candidate)
-  result = generation.evolve
-  print result[1].to_s + " "
-  best_candidate = result[0]
+  Play Strategy
+  ============
+  #{strategy.play_priorities.map(&:to_sym)}
+  DOC
 end
 
-puts <<-DOC
+shitty_smithy_village = Strategy.new(
+  buy_priorities: [
+    :copper,
+    :silver,
+    :duchy,
+    { province: { permanent: true } },
+    { smithy: { permanent: true } },
+    { village: { permanent: true } },
+  ],
+  play_priorities: [:smithy, :village],
+)
+best_candidate = shitty_smithy_village
 
-Buy Strategy
-============
-#{best_candidate.buy_priorities.map(&:to_sym)}
-DOC
+log_strategy(best_candidate)
 
-puts <<-DOC
+player = Player.new(best_candidate)
+30.times { player.take_turn }
+puts "START: " + player.points.to_s
 
-Play Strategy
-============
-#{best_candidate.play_priorities.map(&:to_sym)}
-DOC
+1_000.times do
+  generation = StrategyGeneration.from_strategy(best_candidate, 100)
+  result = generation.evolve
+  best_candidate = result[0]
+  print result[1].to_s + " "
+end
+
+log_strategy(best_candidate)
+
+# result = RubyProf.profile do
+#   ...
+# end
+
+# print a graph profile to profile.html
+# printer = RubyProf::GraphHtmlPrinter.new(result)
+# printer.print(STDOUT, min_percent: 5)
