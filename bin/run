@@ -1,4 +1,6 @@
-$: << File.expand_path("../lib/", __FILE__)
+#!/usr/bin/env ruby
+
+$: << File.expand_path("../../lib/", __FILE__)
 
 require "awesome_print"
 require "byebug"
@@ -9,7 +11,8 @@ require "strategy"
 require "strategy_generator"
 require "strategy_generation"
 
-best_candidate = StrategyGenerator.random(10)
+first_generation = StrategyGeneration.new
+best_candidate = first_generation.evolve[0]
 
 puts <<-DOC
 
@@ -25,9 +28,12 @@ Play Strategy
 #{best_candidate.play_priorities.map(&:to_sym)}
 DOC
 
-1_000.times do
+1_000.times.with_index do |index|
   generation = StrategyGeneration.from_strategy(best_candidate)
-  best_candidate = generation.evolve
+  result = generation.evolve
+  # print [index.to_s, result[1].to_s].join(", ") + "\n"
+  # print result[1].to_s + " "
+  best_candidate = result[0]
 end
 
 puts <<-DOC

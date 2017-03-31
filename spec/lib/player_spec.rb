@@ -57,12 +57,7 @@ describe Player do
     describe "#draw_cards" do
       context "when you try to draw more cards than you own" do
         it "returns all of the cards not in your hand" do
-          player = Player.new(
-            strategy: Strategy.new(
-              buy_priorities: [],
-              play_priorities: [],
-            ),
-          )
+          player = Player.new(strategy: Strategy.new)
 
           player.draw_cards(11)
 
@@ -71,7 +66,7 @@ describe Player do
       end
 
       it "draws a card" do
-        player = Player.new(strategy: blank_strategy)
+        player = Player.new(strategy: Strategy.new)
 
         player.draw_new_hand!
         number_of_cards = player.hand.size

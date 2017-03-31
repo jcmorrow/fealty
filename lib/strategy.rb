@@ -1,9 +1,22 @@
 class Strategy
-  attr_reader :buy_priorities, :play_priorities
+  attr_accessor :buy_priorities, :play_priorities
 
-  def initialize(buy_priorities:, play_priorities:)
-    @buy_priorities = buy_priorities.map { |options| Priority.new(options) }
+  def initialize(buy_priorities: [], play_priorities: [])
+    @buy_priorities = buy_priorities.map do |options|
+      if options.is_a?(Hash)
+        Priority.new(options.keys.first, options.values.first)
+      else
+        Priority.new(options)
+      end
+    end
     @play_priorities = play_priorities.map { |options| Priority.new(options) }
+  end
+
+  def self.from_priorities(buy_priorities:, play_priorities:)
+    new.tap do |strategy|
+      strategy.buy_priorities = buy_priorities
+      strategy.play_priorities = play_priorities
+    end
   end
 
   def next_buy(cards, money)

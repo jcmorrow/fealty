@@ -16,18 +16,22 @@ class StrategyGeneration
         mutated_strategy
       end
       generation.strategies << strategy
-      generation.strategy_points = Hash.new
     end
   end
 
   def evolve
-    @strategies.each do |strategy|
+    strategies.each do |strategy|
       player = Player.new(strategy)
       20.times { player.take_turn }
-      @strategy_points[strategy] = player.points
+      strategy_points[strategy] = player.points
     end
-    sorted_points = @strategy_points.sort { |a, b| b[1] <=> a[1] }
+    sorted_points = strategy_points.sort { |a, b| b[1] <=> a[1] }
+    average_points = strategy_points.
+      map { |strat_points| strat_points[1] }.
+      reduce { |sum, el| sum + el }.
+      to_f / strategy_points.size
+    puts average_points
     best_candidate = sorted_points.first
-    best_candidate[0]
+    best_candidate
   end
 end

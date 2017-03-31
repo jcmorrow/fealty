@@ -1,6 +1,7 @@
 require "spec_helper"
 require "lib/cards"
 require "lib/player"
+require "lib/priority"
 require "lib/strategy"
 require "lib/strategy_generator"
 require "lib/strategy_generation"
@@ -12,7 +13,7 @@ describe StrategyGeneration do
 
       best_candidate = generation.evolve
 
-      expect(best_candidate).to be_a(Strategy)
+      expect(best_candidate[0]).to be_a(Strategy)
     end
   end
 

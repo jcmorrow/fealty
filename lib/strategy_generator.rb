@@ -1,15 +1,17 @@
 class StrategyGenerator
-  def self.random(size = 100)
+  def self.random(size = 10)
     Strategy.new(
-      buy_priorities: provinces.concat(random_buy_priorities(size)),
+      buy_priorities: [{ province: { permanent: true } }].concat(
+        random_buy_priorities(size),
+      ),
       play_priorities: random_play_priorities,
     )
   end
 
   def self.mutate(strategy)
-    Strategy.new(
-      buy_priorities: mutate_array(strategy.buy_priorities.map(&:to_sym)),
-      play_priorities: mutate_array(strategy.play_priorities.map(&:to_sym)),
+    Strategy.from_priorities(
+      buy_priorities: mutate_array(strategy.buy_priorities),
+      play_priorities: mutate_array(strategy.play_priorities),
     )
   end
 
@@ -29,9 +31,5 @@ class StrategyGenerator
     index = Random.rand(array.size - 1)
     array[index], array[index + 1] = array[index + 1], array[index]
     array
-  end
-
-  def self.provinces
-    [:province] * 10
   end
 end

@@ -15,6 +15,16 @@ describe Strategy do
       expect(buy).to eq(Cards::Gold)
     end
 
+    it "always returns permanent priorities when you can afford them" do
+      buys = [{ gold: { permanent: true } }, :copper]
+      deck = [Cards::Gold.new]
+      strategy = Strategy.new(buy_priorities: buys, play_priorities: [])
+
+      buy = strategy.next_buy(deck, 6)
+
+      expect(buy).to eq(Cards::Gold)
+    end
+
     it "returns the highest buy you can make and don't already have" do
       buys = [:gold, :copper]
       deck = [Cards::Gold.new]
