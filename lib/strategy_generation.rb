@@ -31,7 +31,6 @@ class StrategyGeneration
       reduce { |sum, el| sum + el }.
       to_f / strategy_points.size
     puts average_points
-    best_candidate = sorted_points.first
-    best_candidate
+    sorted_points.first
   end
 end
