@@ -28,7 +28,6 @@ class StrategyGeneration
     end
     sorted_points = @strategy_points.sort { |a, b| b[1] <=> a[1] }
     best_candidate = sorted_points.first
-    print "#{best_candidate[1]}, "
     best_candidate[0]
   end
 end
