@@ -26,11 +26,11 @@ class StrategyGeneration
       strategy_points[strategy] = player.points
     end
     sorted_points = strategy_points.sort { |a, b| b[1] <=> a[1] }
-    average_points = strategy_points.
-      map { |strat_points| strat_points[1] }.
-      reduce { |sum, el| sum + el }.
-      to_f / strategy_points.size
-    puts average_points
+    # average_points = strategy_points.
+    #   map { |strat_points| strat_points[1] }.
+    #   reduce { |sum, el| sum + el }.
+    #   to_f / strategy_points.size
+    # puts average_points
     sorted_points.first
   end
 end

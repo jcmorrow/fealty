@@ -28,11 +28,10 @@ Play Strategy
 #{best_candidate.play_priorities.map(&:to_sym)}
 DOC
 
-1_000.times.with_index do |index|
+100.times do |index|
   generation = StrategyGeneration.from_strategy(best_candidate)
   result = generation.evolve
-  # print [index.to_s, result[1].to_s].join(", ") + "\n"
-  # print result[1].to_s + " "
+  print result[1].to_s + " "
   best_candidate = result[0]
 end
 
